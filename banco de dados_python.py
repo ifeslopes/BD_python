@@ -205,6 +205,29 @@ def gerarEstatistica():
             plt.xlabel('Produto')
             plt.show()
 
+    elif estado == 2:
+        decisao3 = int (input('Digite 1 para pesquisar por dinheiro e 2 por quantidade unitaria: '))
+        if decisao3 == 1:
+            for i in produtos:
+                nomeProdutos.append(i['grupo'])
+
+            valores = []
+            valores.clear()
+            for h in range(0, len(nomeProdutos)):
+                somaValor  = -1
+                for  i in vendido:
+                    if i['grupo'] == nomeProdutos[h]:
+                        somaValor += i['preco']
+                if somaValor == -1:
+                    valores.append(0)
+                elif somaValor > 0:
+                    valores.append(somaValor + 1)
+            plt.plot(nomeProdutos, valores)
+            plt.ylabel('Quantidade  vendida  em  reais')
+            plt.xlabel('Produtos')
+            plt.show()
+
+
         
 while not autentico:
     decisao = int(input('Digite 1 para logar  ou 2 para cadastrar:'))
