@@ -1,5 +1,6 @@
 import pymysql.cursors
 import os
+import matplotlib.pyplot as plt
 conexao = pymysql.connect(
     host='localhost',
     user = 'root',
@@ -13,7 +14,7 @@ os.system('clear') or None
 autentico = False
 
 def logarCadastrar():
-    usuarioExistente = 0
+    usuarioExistente = 0 
     autenticado = False
     ussuarioMaster = False
 
@@ -130,6 +131,49 @@ def listarPedidos():
             except:
                 print('Erro ao dar produto como entregue')
 
+def gerarEstatistica():
+    nomeProdutos = []
+    nomeProdutos.clear
+
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute('select * from produtos')
+            produtos = cursor.fetchall()
+    except:
+        print('Erro ao consultar ao banco de dados!')
+    
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute('select * from estatisticaVendido')
+            vendido = cursor.fetchall()
+    except:
+        print('Erro ao consultar Estatistica')
+    
+    estado = int (input('Digite 0 para sair  1 para pesquisar por nome ou 2 para pesquisar por grupo: '))
+
+    if estado == 1:
+        decisao3 = int (input('Digite 1 para pesquisar por dinheiro e 2 por quantidade unitaria: '))
+        if decisao3 == 1:
+            for i in produtos:
+                nomeProdutos.append(i['nome'])
+
+            valores = []
+            valores.clear()
+            for h in range(0, len(nomeProdutos)):
+                somaValor  = -1
+                for  i in vendido:
+                    if i['nome'] == nomeProdutos[h]:
+                        somaValor += i['preco']
+                if somaValor == -1:
+                    valores.append(0)
+                elif somaValor > 0:
+                    valores.append(somaValor + 1)
+            plt.plot(nomeProdutos, valores)
+            plt.ylabel('Quantidade  vendida  em  reais')
+            plt.xlabel('Produtos')
+            plt.show()
+
+
         
 while not autentico:
     decisao = int(input('Digite 1 para logar  ou 2 para cadastrar:'))
@@ -150,7 +194,7 @@ if autentico:
         decisaoUsuario = 1
 
         while decisaoUsuario != 0:
-            decisaoUsuario = int(input('Digete 0 pra sair  e 1 para cadastra o produtos 2 para lista produtos 3 para lista produtos: '))
+            decisaoUsuario = int(input('Digete 0 pra sair  e 1 para cadastra o produtos 2 para lista produtos 3 para lista produtos 4 para gerar graficos: '))
             if decisaoUsuario == 1:
                 cadastrarProduto()
             elif decisaoUsuario == 2:
@@ -162,3 +206,6 @@ if autentico:
 
             elif decisaoUsuario == 3:
                 listarPedidos()
+            
+            elif decisaoUsuario == 4:
+                gerarEstatistica()
