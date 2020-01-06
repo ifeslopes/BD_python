@@ -1,7 +1,7 @@
 # BD_python
 ## Aprendendo nas férias
 ### Curso:
-![curso](https://www.udemy.com/course/python-do-basico-ao-avancado-inteligencia-artificial/)
+![curso](https://github.com/ifeslopes/BD_python/blob/master/capa%20do%20curso.jpg)
 
 ### interação a banco de dados com PyMySql
 
