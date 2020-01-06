@@ -226,6 +226,39 @@ def gerarEstatistica():
             plt.ylabel('Quantidade  vendida  em  reais')
             plt.xlabel('Produtos')
             plt.show()
+        if decisao3 == 2:
+            grupoUnico=[]
+            grupoUnico.clear()
+            try:
+                with conexao.cursor() as cursor:
+                    cursor.execute('select * from produtos')
+                    grupo = cursor.fetchall()
+            except:
+                print('Erro na consulta!!')
+            try: 
+                with conexao.cursor() as cursor:
+                    cursor.execute('select * from estatisticaVendido')
+                    vendidoGrupo = cursor.fetchall()
+            except:
+                print('Erro na consulta de Grupos')
+            
+            for i in grupo:
+                grupoUnico.append(i['grupo'])
+            grupoUnico = sorted(set(grupoUnico))
+            qtfFinal = []
+            qtfFinal.clear()
+
+            for h in range(0, len(grupoUnico)):
+                qtfUnitaria = 0
+                for i in vendidoGrupo:
+                    if grupoUnico[h] == i['grupo']:
+                        qtfUnitaria += 1 
+                qtfFinal.append(qtfUnitaria)
+            plt.plot(grupoUnico, qtfFinal)
+            plt.ylabel('Qunatidade unitaria vendida')
+            plt.xlabel('Produto')
+            plt.show()
+
 
 
         
